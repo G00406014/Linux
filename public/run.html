@@ -1,40 +1,208 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
+
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>YouTube Video Downloader</title>
+
+    <style>
+
+        body, html {
+
+            height: 100%;
+
+            margin: 0;
+
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+            color: #333;
+
+        }
+
+        body {
+
+            background: linear-gradient(to right, #6dd5ed, #2193b0);
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+        }
+
+        .container {
+
+            background-color: rgba(255, 255, 255, 0.9);
+
+            padding: 40px;
+
+            border-radius: 10px;
+
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+            max-width: 400px;
+
+            width: 100%;
+
+            text-align: center;
+
+        }
+
+        h1 {
+
+            color: #333;
+
+            margin-bottom: 24px;
+
+        }
+
+        .input-group {
+
+            margin-bottom: 20px;
+
+        }
+
+        input[type="text"] {
+
+            width: calc(100% - 24px);
+
+            padding: 12px;
+
+            border-radius: 5px;
+
+            border: 1px solid #ccc;
+
+            font-size: 16px;
+
+        }
+
+        button {
+
+            width: 100%;
+
+            padding: 10px;
+
+            margin-top: 10px;
+
+            border: none;
+
+            border-radius: 5px;
+
+            background-color: #008CBA;
+
+            color: white;
+
+            font-size: 18px;
+
+            cursor: pointer;
+
+            transition: background-color 0.3s ease;
+
+        }
+
+        button:hover {
+
+            background-color: #005f73;
+
+        }
+
+ 
+
+        .footer {
+
+            margin-top: 16px;
+
+            font-size: 14px;
+
+        }
+
+    </style>
+
 </head>
+
 <body>
 
-<h1>YouTube Video Downloader</h1>
+    <div class="container">
 
-<div id="progress-container">
-    <div id="progress-bar"></div>
-</div>
+        <h1>YouTube Video Downloader</h1>
 
-<script>
-    async function updateProgress() {
-        const response = await fetch('download.log');
-        const logText = await response.text();
-        const lines = logText.split('\n');
-        const lastLine = lines[lines.length - 2]; // Get the last line
+        <div class="input-group">
 
-        // Extract progress information (customize based on your log format)
-        const progressMatch = lastLine.match(/(\d+\.\d+%)/);
-        const progress = progressMatch ? progressMatch[1] : '0%';
+            <input type="text" id="videoURL" placeholder="Enter YouTube video URL">
 
-        // Update the progress bar
-        document.getElementById('progress-bar').style.width = progress;
-    }
+        </div>
 
-    // Update progress every 5 seconds (adjust as needed)
-    setInterval(updateProgress, 5000);
+        <button id="downloadBtn">Download</button>
 
-    // Initial update
-    updateProgress();
-</script>
+        <button id="extractAudioBtn">Extract Audio</button>
+    </div>
+ 
+    <script>
+
+        document.getElementById('downloadBtn').addEventListener('click', function() {
+
+            var videoURL = document.getElementById('videoURL').value.trim();
+
+            if(videoURL) {
+
+                // Implement download functionality
+
+                alert('Download feature is not implemented.');
+
+            } else {
+
+                alert('Please enter a YouTube video URL.');
+
+            }
+
+        });
+ 
+        document.getElementById('extractAudioBtn').addEventListener('click', function() {
+
+            var videoURL = document.getElementById('videoURL').value.trim();
+
+            if(videoURL) {
+
+                // Implement extract audio functionality
+
+                alert('Extract Audio feature is not implemented.');
+
+            } else {
+
+                alert('Please enter a YouTube video URL.');
+
+            }
+
+        });
+ 
+        document.getElementById('convertMP4Btn').addEventListener('click', function() {
+
+            var videoURL = document.getElementById('videoURL').value.trim();
+
+            if(videoURL) {
+
+                // Implement convert to MP4 functionality
+
+                alert('Convert to MP4 feature is not implemented.');
+
+            } else {
+
+                alert('Please enter a YouTube video URL.');
+
+            }
+
+        });
+
+    </script>
 
 </body>
+
 </html>
+
 
