@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Video Downloader</title>
+</head>
+<body>
+
+<h1>YouTube Video Downloader</h1>
+
+<div id="progress-container">
+    <div id="progress-bar"></div>
+</div>
+
+<script>
+    async function updateProgress() {
+        const response = await fetch('download.log');
+        const logText = await response.text();
+        const lines = logText.split('\n');
+        const lastLine = lines[lines.length - 2]; // Get the last line
+
+        // Extract progress information (customize based on your log format)
+        const progressMatch = lastLine.match(/(\d+\.\d+%)/);
+        const progress = progressMatch ? progressMatch[1] : '0%';
+
+        // Update the progress bar
+        document.getElementById('progress-bar').style.width = progress;
+    }
+
+    // Update progress every 5 seconds (adjust as needed)
+    setInterval(updateProgress, 5000);
+
+    // Initial update
+    updateProgress();
+</script>
+
+</body>
+</html>
+
