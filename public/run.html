@@ -1,208 +1,214 @@
- <!DOCTYPE html>
-
+<!DOCTYPE html>
+ 
 <html lang="en">
-
+ 
 <head>
-
+ 
     <meta charset="UTF-8">
-
+ 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+ 
     <title>YouTube Video Downloader</title>
-
+ 
     <style>
-
+ 
         body, html {
-
+ 
             height: 100%;
-
+ 
             margin: 0;
-
+ 
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-
+ 
             color: #333;
-
+ 
         }
-
+ 
         body {
-
+ 
             background: linear-gradient(to right, #6dd5ed, #2193b0);
-
+ 
             display: flex;
-
+ 
             justify-content: center;
-
+ 
             align-items: center;
-
+ 
         }
-
+ 
         .container {
-
+ 
             background-color: rgba(255, 255, 255, 0.9);
-
+ 
             padding: 40px;
-
+ 
             border-radius: 10px;
-
+ 
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-
+ 
             max-width: 400px;
-
+ 
             width: 100%;
-
+ 
             text-align: center;
-
+ 
         }
-
+ 
         h1 {
-
+ 
             color: #333;
-
+ 
             margin-bottom: 24px;
-
+ 
         }
-
+ 
         .input-group {
-
+ 
             margin-bottom: 20px;
-
+ 
         }
-
+ 
         input[type="text"] {
-
+ 
             width: calc(100% - 24px);
-
+ 
             padding: 12px;
-
+ 
             border-radius: 5px;
-
+ 
             border: 1px solid #ccc;
-
+ 
             font-size: 16px;
-
+ 
         }
-
+ 
         button {
-
+ 
             width: 100%;
-
+ 
             padding: 10px;
-
+ 
             margin-top: 10px;
-
+ 
             border: none;
-
+ 
             border-radius: 5px;
-
+ 
             background-color: #008CBA;
-
+ 
             color: white;
-
+ 
             font-size: 18px;
-
+ 
             cursor: pointer;
-
+ 
             transition: background-color 0.3s ease;
-
+ 
         }
-
+ 
         button:hover {
-
+ 
             background-color: #005f73;
-
-        }
-
  
-
+        }
+ 
+ 
         .footer {
-
+ 
             margin-top: 16px;
-
+ 
             font-size: 14px;
-
+ 
         }
-
+ 
     </style>
-
+ 
 </head>
-
+ 
 <body>
-
+ 
     <div class="container">
-
+ 
         <h1>YouTube Video Downloader</h1>
-
+ 
         <div class="input-group">
-
+ 
             <input type="text" id="videoURL" placeholder="Enter YouTube video URL">
-
+ 
         </div>
-
+ 
         <button id="downloadBtn">Download</button>
-
+ 
         <button id="extractAudioBtn">Extract Audio</button>
+
     </div>
- 
+
     <script>
-
-        document.getElementById('downloadBtn').addEventListener('click', function() {
-
-            var videoURL = document.getElementById('videoURL').value.trim();
-
-            if(videoURL) {
-
-                // Implement download functionality
-
-                alert('Download feature is not implemented.');
-
-            } else {
-
-                alert('Please enter a YouTube video URL.');
-
-            }
-
-        });
  
-        document.getElementById('extractAudioBtn').addEventListener('click', function() {
+ document.getElementById('downloadBtn').addEventListener('click', function() {
+  var videoURL = document.getElementById('videoURL').value.trim();
 
-            var videoURL = document.getElementById('videoURL').value.trim();
+ 	console.log("Reached it");
+    // Implement download functionality
+    fetch('http://localhost:3000/downloadVideo', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ url: videoURL })
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log(data);
+      // Handle the response data as needed
+    })
+    .catch((error) => console.error('Error:', error));
+  
+});
 
-            if(videoURL) {
 
-                // Implement extract audio functionality
+document.getElementById('extractAudioBtn').addEventListener('click', function() {
+  var videoURL = document.getElementById('videoURL').value.trim();
 
-                alert('Extract Audio feature is not implemented.');
+  if (videoURL) {
+      extractAudio(videoURL);
+      
+  } else {
+    alert('Please enter a YouTube video URL.');
+  }
+});
 
-            } else {
+function downloadVideo(videoUrl) {
+  fetch('http://localhost:3000/downloadVideo', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ url: videoUrl })
+  })
+  .then(response => response.json())
+  .then(data => console.log(data))
+  .catch((error) => console.error('Error:', error));
+}
 
-                alert('Please enter a YouTube video URL.');
-
-            }
-
-        });
+function extractAudio(videoUrl) {
+  fetch('http://localhost:3000/extractAudio', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ url: videoUrl })
+  })
+  .then(response => response.json())
+  .then(data => console.log(data))
+  .catch((error) => console.error('Error:', error));
+}
+	
  
-        document.getElementById('convertMP4Btn').addEventListener('click', function() {
-
-            var videoURL = document.getElementById('videoURL').value.trim();
-
-            if(videoURL) {
-
-                // Implement convert to MP4 functionality
-
-                alert('Convert to MP4 feature is not implemented.');
-
-            } else {
-
-                alert('Please enter a YouTube video URL.');
-
-            }
-
-        });
-
     </script>
-
+ 
 </body>
-
+ 
 </html>
 
 
