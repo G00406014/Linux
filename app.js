@@ -1,41 +1,64 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+const express = require('express');
+var router = express.Router();
+const { exec } = require("child_process");
+const fs = require('fs');
+const path = require('path');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-
-var app = express();
-
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
-
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
-
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
-
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  next(createError(404));
+router.get('/', function(req, res, next) {
+  res.render('index', { title: 'EXPRESS' });
 });
 
-// error handler
-app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+router.post('/downloadVideo', function(req, res, next) {
+  var url = req.body.url;
+  var outputDirectory = "/home/student/YoutubeVideos"; // Modify with your actual path
+  var outputPath = path.join(outputDirectory, '%(title)s.%(ext)s');
 
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
+  // Ensure the output directory exists
+  if (!fs.existsSync(outputDirectory)) {
+    fs.mkdirSync(outputDirectory, { recursive: true });
+  }
+
+  // Use double quotes around the outputPath to prevent shell interpretation of special characters
+exec(`yt-dlp -o "${outputPath}" "${url}"`, (error, stdout, stderr) => {
+    if (error) {
+      console.error(`Error: ${error.message}`);
+      res.status(500).send(`Error: ${error.message}`);
+      return;
+    }
+    if (stderr) {
+      console.error(`Stderr: ${stderr}`);
+      res.status(500).send(`Stderr: ${stderr}`);
+      return;
+    }
+    console.log(`Stdout: ${stdout}`);
+    res.json({ message: 'Video downloaded successfully', stdout });
+  });
 });
 
-module.exports = app;
+router.post('/extractAudio', function(req, res, next) {
+  var url = req.body.url;
+  var outputDirectory = "/home/student/YoutubeVideos"; // Modify with your actual path
+  var outputPath = path.join(outputDirectory, '%(title)s.%(ext)s');
+
+  // Ensure the output directory exists
+  if (!fs.existsSync(outputDirectory)) {
+    fs.mkdirSync(outputDirectory, { recursive: true });
+  }
+
+  exec(`yt-dlp -x --audio-format mp3 -o "${outputPath}" "${url}"`, (error, stdout, stderr) => {
+    if (error) {
+      console.error(`Error: ${error.message}`);
+      res.status(500).send(`Error: ${error.message}`);
+      return;
+    }
+    if (stderr) {
+      console.error(`Stderr: ${stderr}`);
+      res.status(500).send(`Stderr: ${stderr}`);
+      return;
+    }
+    console.log(`Stdout: ${stdout}`);
+    res.json({ message: 'Audio extracted successfully', stdout });
+  });
+});
+
+module.exports = router; 
